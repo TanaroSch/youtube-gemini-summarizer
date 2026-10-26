@@ -73,16 +73,6 @@ MIT
 
 ## Auf homeserver zusammenfassen
 
-Zweiter Rechtsklick-Eintrag „Auf homeserver zusammenfassen“, auf Video-Links
-überall auf YouTube (auch Startseite) und auf der Videoseite selbst. Er schickt
-den Link im Hintergrund an `https://tools.server.tanaro.one/video/` (eigenes
-Whisper-Transkript, funktioniert auch ohne YouTube-Untertitel). Rückmeldung:
-kurz ✓ (angenommen) bzw. = (schon vorhanden) am Symbol, fertig meldet ntfy mit
-Link auf die Notiz. Verlauf: Notiz `KI-Briefing/Videos.md` im Vault.
-
-Ohne Authelia-Sitzung oder bei einem Fehler öffnet sich stattdessen die Seite
-(Anmelden, sie schickt den Link dann selbst). Der Dienst erlaubt Schreibaufrufe
-von der ID dieser entpackten Erweiterung (`boghdgedehhahemkdigjngcdgokkdhkk`);
-wird der Ordner verschoben, ändert sich die ID, dann `KIB_EXTENSION_ORIGINS`
-in ki-briefing anpassen.
-
+Eigene Erweiterung im Unterordner `homeserver/` (eigener Eintrag direkt im
+Rechtsklickmenü; zwei Einträge einer Erweiterung bündelt Brave im Untermenü).
+Siehe `homeserver/README.md`.
