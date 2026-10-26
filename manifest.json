@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "YouTube → Gemini Zusammenfasser",
-  "version": "1.2.0",
-  "description": "Rechtsklick auf ein YouTube-Video: mit Gemini oder auf homeserver (eigenes Transkript, Notiz) zusammenfassen.",
+  "version": "1.3.0",
+  "description": "Rechtsklick auf ein YouTube-Video und direkt mit Gemini zusammenfassen lassen.",
   "permissions": [
     "contextMenus",
     "tabs",
@@ -13,8 +13,7 @@
     "*://www.youtube.com/*",
     "*://m.youtube.com/*",
     "*://youtu.be/*",
-    "*://gemini.google.com/*",
-    "https://tools.server.tanaro.one/*"
+    "*://gemini.google.com/*"
   ],
   "background": {
     "service_worker": "background.js"

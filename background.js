@@ -3,16 +3,7 @@ const PROMPT = (url) =>
 
 // ── Setup context menus ──────────────────────────────────────────────────────
 
-const TOOL = 'https://tools.server.tanaro.one/video/?url=';
-const LINK_TARGETS = ['*://www.youtube.com/watch*', '*://www.youtube.com/shorts/*', '*://youtu.be/*', '*://m.youtube.com/watch*'];
-const WATCH_PAGES = ['*://www.youtube.com/watch*', '*://www.youtube.com/shorts/*', '*://m.youtube.com/watch*'];
-
 chrome.runtime.onInstalled.addListener(() => {
-  // homeserver: eigenes Transkript, Notiz im Vault, Verlauf in KI-Briefing/Videos.md
-  chrome.contextMenus.create({ id: 'hs-link', title: 'Auf homeserver zusammenfassen', contexts: ['link'],
-    documentUrlPatterns: ['*://www.youtube.com/*', '*://m.youtube.com/*'], targetUrlPatterns: LINK_TARGETS });
-  chrome.contextMenus.create({ id: 'hs-page', title: 'Auf homeserver zusammenfassen', contexts: ['page'],
-    documentUrlPatterns: WATCH_PAGES });
   // When hovering over a video link (thumbnail, title, etc.)
   chrome.contextMenus.create({
     id: 'ytg-link',
@@ -46,11 +37,6 @@ chrome.runtime.onInstalled.addListener(() => {
 // ── Handle context menu click ────────────────────────────────────────────────
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (['hs-link', 'hs-page'].includes(info.menuItemId)) {
-    const url = cleanYouTubeUrl(info.menuItemId === 'hs-link' ? info.linkUrl : tab.url);
-    sendToHomeserver(url, tab);
-    return;
-  }
   if (!['ytg-link', 'ytg-page'].includes(info.menuItemId)) return;
 
   let rawUrl = info.menuItemId === 'ytg-link' ? info.linkUrl : tab.url;
@@ -87,39 +73,6 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     console.error('[YT→Gemini] Script injection failed:', err);
   }
 });
-
-// ── homeserver: in the background into the queue, ntfy reports when done ────
-// The request carries Brave's Authelia session cookie (host permission for
-// tools.server.tanaro.one). Without a session, or on any error, the page opens
-// once instead: there you can sign in, and it sends the link itself.
-
-const API = 'https://tools.server.tanaro.one/video/api/videos';
-
-async function sendToHomeserver(url, tab) {
-  setBadge('…', '#6b7280');
-  try {
-    const r = await fetch(API, {
-      method: 'POST', credentials: 'include', redirect: 'manual',
-      headers: { 'Content-Type': 'application/json', 'X-KIB': '1' },
-      body: JSON.stringify({ url }),
-    });
-    const isJson = (r.headers.get('content-type') || '').includes('application/json');
-    if (r.type === 'opaqueredirect' || !isJson) throw new Error('login');
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
-    setBadge(data.existing ? '=' : '✓', '#396c61');
-  } catch (err) {
-    console.warn('[YT→homeserver]', err.message);
-    setBadge('!', '#b42318');
-    chrome.tabs.create({ url: TOOL + encodeURIComponent(url), index: tab.index + 1 });
-  }
-}
-
-function setBadge(text, color) {
-  chrome.action.setBadgeBackgroundColor({ color });
-  chrome.action.setBadgeText({ text });
-  setTimeout(() => chrome.action.setBadgeText({ text: '' }), 4000);
-}
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
