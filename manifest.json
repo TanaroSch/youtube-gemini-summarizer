@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "YouTube → Gemini Zusammenfasser",
-  "version": "1.0.0",
-  "description": "Rechtsklick auf ein YouTube-Video und direkt mit Gemini zusammenfassen lassen.",
+  "version": "1.1.0",
+  "description": "Rechtsklick auf ein YouTube-Video: mit Gemini oder auf homeserver (eigenes Transkript, Notiz) zusammenfassen.",
   "permissions": [
     "contextMenus",
     "tabs",
@@ -21,16 +21,16 @@
   "action": {
     "default_title": "YouTube → Gemini",
     "default_icon": {
-      "16":  "icons/icon16.png",
-      "32":  "icons/icon32.png",
-      "48":  "icons/icon48.png",
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     }
   },
   "icons": {
-    "16":  "icons/icon16.png",
-    "32":  "icons/icon32.png",
-    "48":  "icons/icon48.png",
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   }
 }
